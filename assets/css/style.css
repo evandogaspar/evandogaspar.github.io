@@ -280,6 +280,20 @@ body {
   background: rgba(15, 23, 42, 0.85);
 }
 
+.btn-github {
+  border-color: #34d399;
+  color: #ecfdf5;
+  background: linear-gradient(135deg, #052e2b 0%, #064e3b 55%, #065f46 100%);
+  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3);
+}
+
+.btn-github:hover {
+  transform: translateY(-1px);
+  border-color: #6ee7b7;
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 55%, #047857 100%);
+  box-shadow: 0 16px 45px rgba(16, 185, 129, 0.42);
+}
+
 .hero-contact-mini {
   display: flex;
   flex-wrap: wrap;
@@ -611,6 +625,41 @@ body {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 22px 60px rgba(15, 23, 42, 0.95);
   border-color: rgba(56, 189, 248, 0.7);
+}
+
+.portfolio-block + .portfolio-block {
+  margin-top: 24px;
+}
+
+.portfolio-subtitle {
+  margin: 0 0 12px;
+  font-size: 0.96rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #cbd5e1;
+}
+
+.ai-projects-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.ai-project-card {
+  display: grid;
+  gap: 10px;
+}
+
+.ai-project-card h3 {
+  margin: 0;
+}
+
+.ai-project-card .chips {
+  margin-top: 0;
+}
+
+.project-actions {
+  margin-top: 4px;
 }
 
 .portfolio-grid {
@@ -1023,6 +1072,10 @@ body {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .portfolio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .contact-main {
     grid-row: auto;
   }
@@ -1057,6 +1110,10 @@ body {
   }
 
   .courses-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .portfolio-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
