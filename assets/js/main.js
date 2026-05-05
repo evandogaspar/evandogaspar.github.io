@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const portfolioThumbs = document.querySelectorAll(".portfolio-thumb");
+  const previewButtons = document.querySelectorAll("[data-preview-src]");
   const portfolioModal = document.getElementById("portfolio-modal");
   const portfolioModalImg = portfolioModal
     ? portfolioModal.querySelector("img")
@@ -163,6 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.key === "Escape") {
         closePortfolioModal();
       }
+    });
+  }
+
+  if (previewButtons.length > 0 && portfolioModal) {
+    previewButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const fullSrc = button.getAttribute("data-preview-src") || "";
+        const alt = button.getAttribute("data-preview-alt") || "";
+        const caption = button.getAttribute("data-preview-caption") || "";
+
+        if (fullSrc) {
+          openPortfolioModal(fullSrc, alt, caption);
+        }
+      });
     });
   }
 });
