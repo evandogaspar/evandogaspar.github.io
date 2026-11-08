@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     const animatedSections = document.querySelectorAll(
-      ".section, .hero-card, .card, .timeline-item"
+      ".hero-card, .card, .timeline-item, .portfolio-item"
     );
 
     animatedSections.forEach(el => {
@@ -117,8 +117,17 @@ document.addEventListener("DOMContentLoaded", () => {
     ? portfolioModal.querySelector(".portfolio-modal-backdrop")
     : null;
 
+  const portfolioModalVideo = portfolioModal
+    ? portfolioModal.querySelector("video")
+    : null;
+
   const openPortfolioModal = (src, alt, caption) => {
     if (!portfolioModal || !portfolioModalImg || !portfolioModalCaption) return;
+    if (portfolioModalVideo) {
+      portfolioModalVideo.pause();
+      portfolioModalVideo.hidden = true;
+    }
+    portfolioModalImg.hidden = false;
     portfolioModalImg.src = src;
     portfolioModalImg.alt = alt || "Dashboard em Power BI";
     portfolioModalCaption.textContent = caption || "";
@@ -126,11 +135,94 @@ document.addEventListener("DOMContentLoaded", () => {
     portfolioModal.setAttribute("aria-hidden", "false");
   };
 
+  const openVideoModal = (src, caption) => {
+    if (!portfolioModal || !portfolioModalVideo || !portfolioModalCaption) return;
+    if (portfolioModalImg) portfolioModalImg.hidden = true;
+    portfolioModalVideo.hidden = false;
+    if (portfolioModalVideo.getAttribute("src") !== src) {
+      portfolioModalVideo.src = src;
+    }
+    portfolioModalCaption.textContent = caption || "";
+    portfolioModal.classList.add("is-open");
+    portfolioModal.setAttribute("aria-hidden", "false");
+    portfolioModalVideo.currentTime = 0;
+    portfolioModalVideo.play().catch(() => {});
+  };
+
   const closePortfolioModal = () => {
     if (!portfolioModal) return;
     portfolioModal.classList.remove("is-open");
     portfolioModal.setAttribute("aria-hidden", "true");
+    if (portfolioModalVideo) portfolioModalVideo.pause();
   };
+
+  // Real fullscreen for the project videos; falls back to the modal
+  const isFullscreen = () => document.fullscreenElement || document.webkitFullscreenElement;
+
+  const enterFullscreen = video => {
+    video.currentTime = 0;
+    video.controls = true;
+    video.play().catch(() => {});
+    if (video.requestFullscreen) {
+      return video.requestFullscreen().then(() => true).catch(() => false);
+    }
+    if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+      return Promise.resolve(true);
+    }
+    if (video.webkitEnterFullscreen) {
+      // iOS Safari
+      video.webkitEnterFullscreen();
+      return Promise.resolve(true);
+    }
+    return Promise.resolve(false);
+  };
+
+  const onFullscreenExit = () => {
+    if (isFullscreen()) return;
+    document.querySelectorAll(".feature-video").forEach(video => {
+      video.controls = false;
+      video.play().catch(() => {});
+    });
+  };
+  document.addEventListener("fullscreenchange", onFullscreenExit);
+  document.addEventListener("webkitfullscreenchange", onFullscreenExit);
+  document.querySelectorAll(".feature-video").forEach(video => {
+    video.addEventListener("webkitendfullscreen", onFullscreenExit);
+  });
+
+  const openVideo = (trigger, src, caption) => {
+    const card = trigger.closest(".feature-card");
+    const video = card ? card.querySelector(".feature-video") : null;
+    if (!video) {
+      openVideoModal(src, caption);
+      return;
+    }
+    enterFullscreen(video).then(ok => {
+      if (!ok) {
+        video.controls = false;
+        openVideoModal(src, caption);
+      }
+    });
+  };
+
+  document.querySelectorAll("[data-video-src]").forEach(button => {
+    button.addEventListener("click", () => {
+      openVideo(
+        button,
+        button.getAttribute("data-video-src") || "",
+        button.getAttribute("data-preview-caption") || ""
+      );
+    });
+  });
+
+  // Clicking the video itself also opens it fullscreen
+  document.querySelectorAll(".feature-video").forEach(video => {
+    video.addEventListener("click", () => {
+      if (isFullscreen()) return;
+      openVideo(video, video.getAttribute("src") || "", "");
+    });
+  });
 
   if (portfolioThumbs.length > 0 && portfolioModal) {
     portfolioThumbs.forEach(thumb => {
@@ -179,5 +271,75 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+  }
+  // Glass spotlight: soft light follows the cursor on glass surfaces
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !prefersReducedMotion) {
+    document.addEventListener(
+      "pointermove",
+      event => {
+        const glass = event.target.closest && event.target.closest(".glass");
+        if (!glass) return;
+        const rect = glass.getBoundingClientRect();
+        glass.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+        glass.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      },
+      { passive: true }
+    );
+  }
+
+  // Highlight the nav link of the section currently in view
+  const navLinks = Array.from(document.querySelectorAll(".nav-links a[href^='#']"));
+  if (navLinks.length && "IntersectionObserver" in window) {
+    const byId = new Map(navLinks.map(link => [link.getAttribute("href").slice(1), link]));
+    const navObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(link => link.classList.remove("is-active"));
+          const active = byId.get(entry.target.id);
+          if (active) {
+            active.classList.add("is-active");
+            // Scroll only the nav strip (mobile) — never the page, so it
+            // doesn't interrupt the smooth scroll triggered by anchor clicks
+            const nav = active.parentElement;
+            if (nav && nav.scrollWidth > nav.clientWidth) {
+              nav.scrollTo({
+                left: active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2,
+                behavior: "smooth",
+              });
+            }
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    byId.forEach((_, id) => {
+      const section = document.getElementById(id);
+      if (section) navObserver.observe(section);
+    });
+  }
+
+  // Only play the featured videos while they are on screen
+  const featureVideos = document.querySelectorAll(".feature-video");
+  if (prefersReducedMotion) {
+    featureVideos.forEach(video => {
+      video.removeAttribute("autoplay");
+      video.pause();
+      video.controls = true;
+    });
+  } else if (featureVideos.length && "IntersectionObserver" in window) {
+    const videoObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.play().catch(() => {});
+          } else {
+            entry.target.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    featureVideos.forEach(video => videoObserver.observe(video));
   }
 });
