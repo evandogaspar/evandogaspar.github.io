@@ -159,7 +159,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Real fullscreen for the project videos; falls back to the modal
   const isFullscreen = () => document.fullscreenElement || document.webkitFullscreenElement;
 
+  // Videos with data-full-src show a short muted preview inline and swap to
+  // the full version (with audio) only when opened fullscreen
+  const swapToFull = video => {
+    const full = video.getAttribute("data-full-src");
+    if (!full || video.dataset.showingFull) return;
+    video.dataset.previewSrc = video.getAttribute("src") || "";
+    video.dataset.showingFull = "1";
+    video.loop = false;
+    video.src = full;
+    video.muted = false;
+  };
+
+  const swapToPreview = video => {
+    if (!video.dataset.showingFull) return;
+    delete video.dataset.showingFull;
+    video.loop = true;
+    video.muted = true;
+    video.src = video.dataset.previewSrc || video.getAttribute("src");
+  };
+
   const enterFullscreen = video => {
+    swapToFull(video);
     video.currentTime = 0;
     video.controls = true;
     video.play().catch(() => {});
@@ -182,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isFullscreen()) return;
     document.querySelectorAll(".feature-video").forEach(video => {
       video.controls = false;
+      swapToPreview(video);
       video.play().catch(() => {});
     });
   };
@@ -198,10 +220,13 @@ document.addEventListener("DOMContentLoaded", () => {
       openVideoModal(src, caption);
       return;
     }
+    const fullSrc = video.getAttribute("data-full-src");
     enterFullscreen(video).then(ok => {
       if (!ok) {
         video.controls = false;
-        openVideoModal(src, caption);
+        swapToPreview(video);
+        openVideoModal(fullSrc || src, caption);
+        if (portfolioModalVideo) portfolioModalVideo.muted = !fullSrc;
       }
     });
   };

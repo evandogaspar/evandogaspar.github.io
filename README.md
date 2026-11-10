@@ -12,7 +12,13 @@ Página estática moderna e futurista para apresentação profissional de Evando
 
 - `index.html` – Página principal do currículo/portfólio.
 - `assets/css/style.css` – Estilos globais da página.
-- `assets/js/main.js` – Scripts simples para animações e utilidades.
+- `assets/js/main.js` – Animações, navegação, modais e vídeos em tela cheia.
+- `assets/img/perfil/` – Foto de perfil.
+- `assets/projetos/<projeto>/` – Mídias de cada projeto do portfólio (vídeos otimizados e capas):
+  - `dino-rl-agent/`, `video-interativo-ia/`, `live-flow/`, `power-bi/`.
+
+Vídeos do portfólio são versões otimizadas para web (H.264, `+faststart`). Projetos com vídeo
+longo têm um `preview.mp4` curto e sem áudio para o card, e o vídeo completo só carrega em tela cheia.
 
 ## Como visualizar localmente
 

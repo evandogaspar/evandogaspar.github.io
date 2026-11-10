@@ -97,7 +97,7 @@
               aria-label="Ver foto de perfil em tamanho maior"
             >
               <img
-                src="assets/foto_perfil/evando.jpeg"
+                src="assets/img/perfil/evando.jpeg"
                 alt="Foto de perfil de Evando José Gaspar"
                 loading="lazy"
               />
@@ -387,8 +387,8 @@
               <div class="video-frame">
                 <video
                   class="feature-video"
-                  src="assets/video/video.mp4"
-                  poster="assets/video/poster.jpg"
+                  src="assets/projetos/dino-rl-agent/demo.mp4"
+                  poster="assets/projetos/dino-rl-agent/poster.jpg"
                   autoplay
                   muted
                   loop
@@ -455,7 +455,7 @@
                 <button
                   type="button"
                   class="btn btn-preview"
-                  data-video-src="assets/video/video.mp4"
+                  data-video-src="assets/projetos/dino-rl-agent/demo.mp4"
                   data-preview-caption="Dino RL Agent: decisões tomadas apenas a partir das imagens da tela."
                 >
                   Assistir em tela cheia
@@ -464,6 +464,83 @@
                   Solicitar demonstração
                 </a>
               </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card glass feature-card" id="video-interativo-ia">
+            <div class="feature-media">
+              <div class="video-frame video-frame-cam">
+                <video
+                  class="feature-video"
+                  src="assets/projetos/video-interativo-ia/preview.mp4"
+                  data-full-src="assets/projetos/video-interativo-ia/completo.mp4"
+                  poster="assets/projetos/video-interativo-ia/poster.jpg"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label="Demonstração: objetos virtuais criados a partir da webcam flutuando e reagindo às mãos"
+                ></video>
+                <span class="hud">só webcam · ~30 FPS</span>
+              </div>
+              <p class="video-caption">
+                Trecho da demonstração. Em tela cheia, o vídeo completo (5 min) toca com áudio: a conversa por voz com a IA
+                e os comandos de gravidade, furacão e atração pela mão.
+              </p>
+            </div>
+
+            <div class="feature-body">
+              <div class="feature-intro">
+                <div class="feature-tags">
+                  <p class="tag">Visão Computacional · IA por voz</p>
+                </div>
+                <h3>Vídeo Interativo com IA</h3>
+                <p class="feature-lead">
+                  E se a sua webcam entendesse o que você faz na frente dela? Eu mostro um <strong>objeto real</strong>,
+                  e o sistema recorta o objeto da imagem, cria <strong>cópias virtuais</strong> e as solta num mundo com
+                  <strong>física</strong>. Dá para pegar, arrastar e arremessar as cópias com a mão, tirar a gravidade e
+                  fazer tudo explodir.
+                </p>
+                <p class="feature-lead">
+                  Toda a interação vem <strong>só da análise do vídeo</strong>: sem sensor, luva, marcador, câmera de
+                  profundidade ou dispositivo extra.
+                </p>
+                <div class="chips" aria-label="Tecnologias utilizadas no projeto">
+                  <span>Python</span>
+                  <span>OpenCV</span>
+                  <span>MediaPipe</span>
+                  <span>pymunk</span>
+                  <span>OpenAI</span>
+                  <span>ffmpeg</span>
+                </div>
+              </div>
+
+              <div class="feature-detail">
+                <ol class="pipeline" aria-label="O que o sistema extrai de cada quadro">
+                  <li><span class="step-n">01</span><span class="step-t">Mãos</span><span class="step-d">21 pontos por mão e gestos: pinça, indicador, mão aberta</span></li>
+                  <li><span class="step-n">02</span><span class="step-t">Profundidade</span><span class="step-d">Estimada pela imagem: objeto na frente ou atrás dos dedos</span></li>
+                  <li><span class="step-n">03</span><span class="step-t">Segmentação</span><span class="step-d">Objeto real recortado do fundo vira elemento virtual</span></li>
+                  <li><span class="step-n">04</span><span class="step-t">Física</span><span class="step-d">Gravidade, colisões e arremessos com pymunk</span></li>
+                </ol>
+
+                <ul class="spec-grid">
+                  <li><span class="io-title">IA por voz</span>Conversa, reconhece o objeto mostrado e aciona as ações (function calling)</li>
+                  <li><span class="io-title">Tempo real</span>~30 FPS num notebook sem placa de vídeo dedicada</li>
+                  <li><span class="io-title">Gravação</span>Sessão exportada em MP4 com áudio e legendas</li>
+                </ul>
+
+                <div class="project-actions">
+                  <button
+                    type="button"
+                    class="btn btn-preview"
+                    data-video-src="assets/projetos/video-interativo-ia/completo.mp4"
+                    data-preview-caption="Vídeo Interativo com IA: webcam, visão computacional, física e IA por voz."
+                  >
+                    Assistir vídeo completo
+                  </button>
+                </div>
               </div>
             </div>
           </article>
@@ -529,8 +606,8 @@
             <div class="video-frame video-frame-dark">
               <video
                 class="feature-video"
-                src="assets/video/live-flow-web.mp4"
-                poster="assets/video/live-flow-poster.jpg"
+                src="assets/projetos/live-flow/demo.mp4"
+                poster="assets/projetos/live-flow/poster.jpg"
                 autoplay
                 muted
                 loop
@@ -584,7 +661,7 @@
                 <button
                   type="button"
                   class="btn btn-preview"
-                  data-video-src="assets/video/live-flow-web.mp4"
+                  data-video-src="assets/projetos/live-flow/demo.mp4"
                   data-preview-caption="Live Flow: painel 3D em Three.js com dados em tempo real."
                 >
                   Assistir em tela cheia
@@ -603,11 +680,11 @@
           <button
             type="button"
             class="portfolio-thumb"
-            data-full="assets/portflolio_powerBI/dashboard-1.png"
+            data-full="assets/projetos/power-bi/dashboard-1.png"
             aria-label="Ver dashboard Power BI 1 em tamanho maior"
           >
             <img
-              src="assets/portflolio_powerBI/dashboard-1.png"
+              src="assets/projetos/power-bi/dashboard-1.png"
               alt="Dashboard em Power BI para acompanhamento gerencial"
               loading="lazy"
             />
@@ -619,11 +696,11 @@
           <button
             type="button"
             class="portfolio-thumb"
-            data-full="assets/portflolio_powerBI/dashboard-3.png"
+            data-full="assets/projetos/power-bi/dashboard-3.png"
             aria-label="Ver dashboard Power BI 3 em tamanho maior"
           >
             <img
-              src="assets/portflolio_powerBI/dashboard-3.png"
+              src="assets/projetos/power-bi/dashboard-3.png"
               alt="Dashboard em Power BI para acompanhamento gerencial"
               loading="lazy"
             />
@@ -635,11 +712,11 @@
           <button
             type="button"
             class="portfolio-thumb"
-            data-full="assets/portflolio_powerBI/dashboard-4.png"
+            data-full="assets/projetos/power-bi/dashboard-4.png"
             aria-label="Ver dashboard Power BI 4 em tamanho maior"
           >
             <img
-              src="assets/portflolio_powerBI/dashboard-4.png"
+              src="assets/projetos/power-bi/dashboard-4.png"
               alt="Dashboard em Power BI para acompanhamento gerencial"
               loading="lazy"
             />
@@ -651,11 +728,11 @@
           <button
             type="button"
             class="portfolio-thumb"
-            data-full="assets/portflolio_powerBI/dashboard-5.png"
+            data-full="assets/projetos/power-bi/dashboard-5.png"
             aria-label="Ver dashboard Power BI 5 em tamanho maior"
           >
             <img
-              src="assets/portflolio_powerBI/dashboard-5.png"
+              src="assets/projetos/power-bi/dashboard-5.png"
               alt="Dashboard em Power BI para acompanhamento gerencial"
               loading="lazy"
             />
@@ -667,11 +744,11 @@
           <button
             type="button"
             class="portfolio-thumb"
-            data-full="assets/portflolio_powerBI/dashboard-6.png"
+            data-full="assets/projetos/power-bi/dashboard-6.png"
             aria-label="Ver dashboard Power BI 6 em tamanho maior"
           >
             <img
-              src="assets/portflolio_powerBI/dashboard-6.png"
+              src="assets/projetos/power-bi/dashboard-6.png"
               alt="Dashboard em Power BI para acompanhamento gerencial"
               loading="lazy"
             />
@@ -849,7 +926,7 @@
         <span>&times;</span>
       </button>
       <img
-        src="assets/foto_perfil/evando.jpeg"
+        src="assets/img/perfil/evando.jpeg"
         alt="Foto de perfil de Evando José Gaspar em tamanho maior"
       />
     </div>

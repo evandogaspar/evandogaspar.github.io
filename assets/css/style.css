@@ -1136,6 +1136,15 @@ strong {
   color: var(--muted);
 }
 
+.video-frame-cam {
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.feature-intro .feature-lead + .feature-lead {
+  margin-top: -2px;
+}
+
 .video-frame-dark {
   background: #000;
   aspect-ratio: 1362 / 470;
